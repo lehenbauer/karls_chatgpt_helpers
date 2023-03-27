@@ -13,6 +13,11 @@ class GPTChatSession:
         self.history = []
 
     def chat(self, content, role="user"):
+        '''Accept a string and an optional role.  if the role
+        is "user" (default), the string is sent to the API for
+        completion.  If the role is "system", the string is
+        appended to the history without being sent to the API.'''
+
         self.history.append({"role": role, "content": content})
         # system role messages are not sent to the API for completion
         if role == "system":

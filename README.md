@@ -1,4 +1,5 @@
 
+context-maintaining chatGPT session class
 
 ```
 import karls_chatgpt_helpers
