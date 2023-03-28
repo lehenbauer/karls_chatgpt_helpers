@@ -38,24 +38,31 @@ class GPTChatSession:
             n=self.n,
             stop=self.stop,
             temperature=self.temperature,
-            streaming=streaming
+            stream=streaming
         )
         return response
 
     def chat(self, content, role="user"):
         response = self._chat(content, role, streaming=False)
+        if role == 'system':
+            return None
         response_text = response.choices[0].message.content
         self.history.append({"role": "assistant", "content": response_text})
         return response_text
 
     def streaming_chat(self, content, role="user"):
         response = self._chat(content, role, streaming=True)
+        if role == 'system':
+            return None
 
         response_text = ""
-        for chunk in response:
-            chunk_text = chunk.choices[0].message.content
-            response_text += chunk_text
-            print(chunk_text, end='', flush=True)
+        try:
+            for chunk in response:
+                chunk_text = chunk.choices[0].message.content
+                response_text += chunk_text
+                print(chunk_text, end='', flush=True)
+        except KeyboardInterrupt:
+            print("Interrupted")
 
         self.history.append({"role": "assistant", "content": response_text})
         return response_text
