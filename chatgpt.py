@@ -21,6 +21,7 @@ def main():
     parser.add_argument('--temperature', type=float, default=0.7, help='Temperature for response generation')
     parser.add_argument('--max-tokens', type=int, default=1000, help='Maximum tokens in generated response')
     parser.add_argument('--model', type=str, default="gpt-3.5-turbo", help='Model used for response generation')
+    parser.add_argument('--stdin', action='store_true', default=False, help='Read prompt from standard input')
 
     args, remaining_args = parser.parse_known_args()
 
@@ -40,17 +41,29 @@ def main():
     if args.system_prompt_file:
         handle_system_prompt_file(session, args.system_prompt_file)
 
-    if args.user_prompt_file and len(remaining_args) > 0:
-        print("Error: Please provide either --user-prompt-file or the prompt on the command line, or neither, not both.")
-        sys.exit(1)
-
+    # If we have a user prompt file, start the prompt with it
+    user_prompt = ''
     if args.user_prompt_file:
         with open(args.user_prompt_file, 'r') as file:
             user_prompt = file.read()
-    elif len(remaining_args) > 0:
-        user_prompt = " ".join(remaining_args)
-    else:
-        user_prompt = sys.stdin.read()
+
+    # If they specified --stdin, read from stdin and
+    # append it to the user prompt
+    if args.stdin:
+        stdin_prompt = sys.stdin.read()
+        if (user_prompt != ''):
+            user_prompt += '\n\n' + stdin_prompt
+        else:
+            user_prompt = stdin_prompt
+
+    # if we have remaining command line args, append or set them to the user prompt
+    if len(remaining_args) > 0:
+        command_line_prompt = " ".join(remaining_args)
+        if (user_prompt != ''):
+            user_prompt += '\n\n' + command_line_prompt
+        else:
+            user_prompt = command_line_prompt
+
 
     response_text = session.chat(user_prompt, role="user")
     sys.stdout.write(response_text)
