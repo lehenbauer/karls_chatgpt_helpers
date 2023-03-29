@@ -32,7 +32,7 @@ def run_editor():
 
 
 def converse(session_file):
-    g = karls_chatgpt_helpers.GPTChatSession()
+    g = karls_chatgpt_helpers.GPTChatSession(debug=False)
 
     # Prompt the user for input in a loop
     while True:
@@ -54,28 +54,38 @@ def converse(session_file):
                     # user's input to the chat API
                 elif line.startswith('%load'):
                     # Code for %load command
-                    filename = line.split()[1]  # Extract the filename
+                    filename = line.split()[1]
                     g.load(filename)
                     continue
                 elif line.startswith('%save'):
                     # Code for %save command
-                    filename = line.split()[1]  # Extract the filename
+                    filename = line.split()[1]
                     g.save(filename)
                     continue
                 elif line.startswith('%yload'):
                     # Code for %load command
-                    filename = line.split()[1]  # Extract the filename
+                    filename = line.split()[1]
                     g.load_yaml(filename)
                     continue
                 elif line.startswith('%ysave'):
                     # Code for %ysave command
-                    filename = line.split()[1]  # Extract the filename
+                    filename = line.split()[1]
                     g.save_yaml(filename)
                     continue
                 elif line.startswith('%history'):
                     # Code for %history command
                     print(g.history)
                     continue
+                elif line.startswith('%!'):
+                    # Code for shell escape
+                    command = line[2:].strip()
+                    subprocess.run(command, shell=True)
+                    continue
+                elif line.startswith('%exit'):
+                    # Code for exit command
+                    g.save(session_file)
+                    break
+
                 else:
                     print("Unrecognized % command, % commands are %list, %edit, %sysedit, %load, %save, %yload, %ysave")
                     continue

@@ -14,12 +14,13 @@ def openai_api_key_set_or_die():
 
 
 class GPTChatSession:
-    def __init__(self, model="gpt-3.5-turbo", max_tokens=1000, n=1, stop=None, temperature=0.5):
+    def __init__(self, model="gpt-3.5-turbo", max_tokens=1000, n=1, stop=None, temperature=0.5, debug=False):
         self.model = model
         self.max_tokens = max_tokens
         self.n = n
         self.stop = stop
         self.temperature = temperature
+        self.debug = debug
         self.history = []
 
     def load(self, filename):
@@ -63,6 +64,7 @@ class GPTChatSession:
             temperature=self.temperature,
             stream=streaming
         )
+
         return response
 
     def chat(self, content, role="user"):
@@ -81,7 +83,8 @@ class GPTChatSession:
         response_text = ""
         try:
             for chunk in response:
-                #print(chunk)
+                if self.debug:
+                    print("chunk:", chunk)
                 delta = chunk.choices[0].delta
                 if 'content' in delta:
                     # append the new text to the response
