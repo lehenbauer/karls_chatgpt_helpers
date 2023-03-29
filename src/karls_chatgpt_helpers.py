@@ -15,20 +15,30 @@ class GPTChatSession:
         self.temperature = temperature
         self.history = []
 
-    def save(self, filename):
-        '''Save the history to a json file.'''
-        with open(filename, "w") as f:
-            json.dump(self.history, f)
-
-    def save_yaml(self, filename):
-        '''Save the history to a yaml file.'''
-        with open(filename, "w") as f:
-            yaml.dump(self.history, f)
-
     def load(self, filename):
         '''Load the history from a file.'''
         with open(filename, "r") as f:
             self.history = json.load(f)
+
+    def save(self, filename):
+        '''Save the history to a json file.'''
+        with open(filename, "w") as f:
+            json.dump(self.history, f, indent=4)
+
+    def load_yaml(self, filename):
+        '''Load the history from a yaml file.'''
+        with open(filename, "r") as f:
+            self.history = yaml.load(f)
+
+    def save_yaml(self, filename):
+        '''Save the history to a yaml file.'''
+        with open(filename, "w") as f:
+            # default_flow_style can be True, False or None,
+            # True means the output will be a single line
+            # False means the output will be multiline
+            # None means the output will be multiline if the data is multiline
+            # canonical can be True or False
+            yaml.dump(self.history, f)
 
     def _chat(self, content, role="user", streaming=False):
         self.history.append({"role": role, "content": content})

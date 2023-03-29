@@ -50,7 +50,8 @@ def converse(session_file):
                     role = 'system' if line.startswith('%sysedit') else 'user'
                     # call the run_editor function to edit the input
                     line = run_editor()
-                    continue
+                    # no continue here, we want to fall through and send the
+                    # user's input to the chat API
                 elif line.startswith('%save'):
                     # Code for %save command
                     filename = line.split()[1]  # Extract the filename
