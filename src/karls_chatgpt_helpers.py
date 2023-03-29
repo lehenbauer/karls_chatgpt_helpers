@@ -6,6 +6,10 @@ import os
 import sys
 import yaml
 
+from email.message import Message
+from email.parser import Parser
+from email.generator import Generator
+
 def openai_api_key_set_or_die():
     if openai.api_key is None:
         print("Error:  OpenAI API key not set.  Please set the OPENAI_API_KEY environment variable, use 'openai api_key set <YOUR_API_KEY>', or some other method to set it before proceeding.")
@@ -37,8 +41,8 @@ class GPTChatSession:
         '''Load the history from an RFC-822 formatted file.'''
         with open(filename, "r") as f:
             parser = Parser()
-            msg = parser.parse(f)
-            for part in msg.walk():
+            message = parser.parse(f)
+            for part in message.walk():
                 if part.get_content_type() == 'text/plain':
                     role = part.get('Role')
                     content = part.get_payload()
@@ -46,16 +50,34 @@ class GPTChatSession:
 
     def save(self, filename):
         '''Save the history to an RFC-822 formatted file.'''
-        msg = Message()
-        for message in self.history:
-            role = message['role']
-            content = message['content']
-            part = msg.add_header('Role', role)
-            part = msg.add_header('Content-Type', 'text/plain')
-            part.set_payload(content)
+        message = Message()
+        for row in self.history:
+            role = row['role']
+            content = row['content']
+
+            message['Role'] = role
+            message['Content-Type'] = 'text/plain'
+            message.set_payload(content)
         with open(filename, "w") as f:
             gen = Generator(f, mangle_from_=False)
-            gen.flatten(msg)
+            gen.flatten(message)
+
+    def save(self, filename):
+        '''Save the history to an RFC-822 formatted file.'''
+        message = Message()
+        for row in self.history:
+            role = row['role']
+            content = row['content']
+
+            part = Message()
+            part['Role'] = role
+            part['Content-Type'] = 'text/plain'
+            part.set_payload(content)
+            message.attach(part)
+
+        with open(filename, "w") as f:
+            gen = Generator(f, mangle_from_=True)
+            gen.flatten(message)
 
     def load_yaml(self, filename):
         '''Load the history from a yaml file.'''
