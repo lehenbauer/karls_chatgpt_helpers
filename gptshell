@@ -72,6 +72,16 @@ def converse(session_file):
                     filename = line.split()[1]
                     g.save_yaml(filename)
                     continue
+                elif line.startswith('%jload'):
+                    # Code for %jload command
+                    filename = line.split()[1]
+                    g.load_json(filename)
+                    continue
+                elif line.startswith('%jsave'):
+                    # Code for %jsave command
+                    filename = line.split()[1]
+                    g.save_json(filename)
+                    continue
                 elif line.startswith('%history'):
                     # Code for %history command
                     print(g.history)

@@ -23,15 +23,39 @@ class GPTChatSession:
         self.debug = debug
         self.history = []
 
-    def load(self, filename):
-        '''Load the history from a file.'''
+    def load_json(self, filename):
+        '''Load the history from a json file.'''
         with open(filename, "r") as f:
             self.history = json.load(f)
 
-    def save(self, filename):
+    def save_json(self, filename):
         '''Save the history to a json file.'''
         with open(filename, "w") as f:
             json.dump(self.history, f, indent=4)
+
+    def load(self, filename):
+        '''Load the history from an RFC-822 formatted file.'''
+        with open(filename, "r") as f:
+            parser = Parser()
+            msg = parser.parse(f)
+            for part in msg.walk():
+                if part.get_content_type() == 'text/plain':
+                    role = part.get('Role')
+                    content = part.get_payload()
+                    self.history.append({"role": role, "content": content})
+
+    def save(self, filename):
+        '''Save the history to an RFC-822 formatted file.'''
+        msg = Message()
+        for message in self.history:
+            role = message['role']
+            content = message['content']
+            part = msg.add_header('Role', role)
+            part = msg.add_header('Content-Type', 'text/plain')
+            part.set_payload(content)
+        with open(filename, "w") as f:
+            gen = Generator(f, mangle_from_=False)
+            gen.flatten(msg)
 
     def load_yaml(self, filename):
         '''Load the history from a yaml file.'''
