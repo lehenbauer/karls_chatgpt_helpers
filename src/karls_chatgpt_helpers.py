@@ -18,6 +18,8 @@ def openai_api_key_set_or_die():
 
 
 class GPTChatSession:
+    delimiter822 = '\n..EOF..\n'
+
     def __init__(self, model="gpt-3.5-turbo", max_tokens=1000, n=1, stop=None, temperature=0.5, debug=False):
         self.model = model
         self.max_tokens = max_tokens
@@ -40,44 +42,32 @@ class GPTChatSession:
     def load(self, filename):
         '''Load the history from an RFC-822 formatted file.'''
         with open(filename, "r") as f:
-            parser = Parser()
-            message = parser.parse(f)
-            for part in message.walk():
-                if part.get_content_type() == 'text/plain':
-                    role = part.get('Role')
-                    content = part.get_payload()
-                    self.history.append({"role": role, "content": content})
+            messages = f.read().split(GPTChatSession.delimiter822)
+
+        parser = Parser()
+
+        for row in messages:
+            message = parser.parsestr(row)
+            role = message['Role']
+            content = message.get_payload()
+
+            self.history.append({"role": role, "content": content})
 
     def save(self, filename):
         '''Save the history to an RFC-822 formatted file.'''
-        message = Message()
-        for row in self.history:
-            role = row['role']
-            content = row['content']
-
-            message['Role'] = role
-            message['Content-Type'] = 'text/plain'
-            message.set_payload(content)
         with open(filename, "w") as f:
-            gen = Generator(f, mangle_from_=False)
-            gen.flatten(message)
+            for row in self.history:
+                role = row['role']
+                content = row['content']
 
-    def save(self, filename):
-        '''Save the history to an RFC-822 formatted file.'''
-        message = Message()
-        for row in self.history:
-            role = row['role']
-            content = row['content']
+                message = Message()
+                message['Role'] = role
+                #message['Content-Type'] = 'text/plain'
+                message.set_payload(content)
+                gen = Generator(f, mangle_from_=False)
+                gen.flatten(message)
+                f.write(f"\n{GPTChatSession.delimiter822}\n")
 
-            part = Message()
-            part['Role'] = role
-            part['Content-Type'] = 'text/plain'
-            part.set_payload(content)
-            message.attach(part)
-
-        with open(filename, "w") as f:
-            gen = Generator(f, mangle_from_=True)
-            gen.flatten(message)
 
     def load_yaml(self, filename):
         '''Load the history from a yaml file.'''

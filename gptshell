@@ -6,6 +6,7 @@ import json
 import os
 import readline
 import requests
+import subprocess
 import tempfile
 import time
 
@@ -30,6 +31,10 @@ def run_editor():
             return contents.strip()
         else:
             return ''
+
+def show_history(history):
+    for row in history:
+        print(row)
 
 def converse(g):
     # Prompt the user for input in a loop
@@ -82,7 +87,7 @@ def converse(g):
                     continue
                 elif line.startswith('%history'):
                     # Code for %history command
-                    print(g.history)
+                    show_history(g.history)
                     continue
                 elif line.startswith('%!'):
                     # Code for shell escape
@@ -96,7 +101,7 @@ def converse(g):
                     continue
                 elif line.startswith('%exit'):
                     # Code for exit command
-                    g.save(session_file)
+                    #g.save(session_file)
                     break
 
                 else:
@@ -113,7 +118,7 @@ def converse(g):
             # Send the user input to ChatGPT
             g.streaming_chat(line, role=role)
         except EOFError:
-            g.save(session_file)
+            #g.save(session_file)
             break
         except KeyboardInterrupt:
             print('interrupt')
@@ -137,6 +142,7 @@ def main():
     if args.load:
         g.load(args.load)
     converse(g)
+    g.save(args.session_file)
 
 if __name__ == "__main__":
     main()
