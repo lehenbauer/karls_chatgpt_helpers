@@ -16,7 +16,7 @@ PROMPT = "gpt> "
 
 def run_editor():
     editor = os.environ.get('EDITOR', 'vi')
-    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmpfile:
+    with tempfile.NamedTemporaryFile(mode='w+', delete=True) as tmpfile:
         tmpfile.close()  # close the file so that the editor can open it
         # open the file in the user's preferred editor
         os.system(f'{editor} {tmpfile.name}')
@@ -42,18 +42,28 @@ def converse(session_file):
             line = input(PROMPT)
             print()
 
-            if line.startswith('%list'):
-                print(g.history)
-                continue
-
-            if line.startswith('%edit') or line.startswith('%sysedit'):
-                role = 'system' if line.startswith('%sysedit') else 'user'
-                # call the run_editor function to edit the input
-                line = run_editor()
-
             if line.startswith('%'):
-                print('Unknown command')
-                continue
+                if line.startswith('%list'):
+                    print(g.history)
+                    continue
+                elif line.startswith('%edit') or line.startswith('%sysedit'):
+                    role = 'system' if line.startswith('%sysedit') else 'user'
+                    # call the run_editor function to edit the input
+                    line = run_editor()
+                    continue
+                elif line.startswith('%save'):
+                    # Code for %save command
+                    filename = line.split()[1]  # Extract the filename
+                    g.save(filename)
+                    continue
+                elif line.startswith('%ysave'):
+                    # Code for %ysave command
+                    filename = line.split()[1]  # Extract the filename
+                    g.save_yaml(filename)
+                    continue
+                else:
+                    print("Unrecognized % command, % commands are %list, %edit, %sysedit, %save, %ysave")
+                    continue
 
             if line.startswith('s:'):
                 role = 'system'

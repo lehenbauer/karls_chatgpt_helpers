@@ -3,6 +3,7 @@
 import openai
 import json
 import os
+import yaml
 
 
 class GPTChatSession:
@@ -15,9 +16,14 @@ class GPTChatSession:
         self.history = []
 
     def save(self, filename):
-        '''Save the history to a file.'''
+        '''Save the history to a json file.'''
         with open(filename, "w") as f:
             json.dump(self.history, f)
+
+    def save_yaml(self, filename):
+        '''Save the history to a yaml file.'''
+        with open(filename, "w") as f:
+            yaml.dump(self.history, f)
 
     def load(self, filename):
         '''Load the history from a file.'''
@@ -58,9 +64,13 @@ class GPTChatSession:
         response_text = ""
         try:
             for chunk in response:
-                chunk_text = chunk.choices[0].message.content
-                response_text += chunk_text
-                print(chunk_text, end='', flush=True)
+                #print(chunk)
+                delta = chunk.choices[0].delta
+                if 'content' in delta:
+                    # append the new text to the response
+                    chunk_text = delta['content']
+                    response_text += chunk_text
+                    print(chunk_text, end='', flush=True)
         except KeyboardInterrupt:
             print("Interrupted")
 

@@ -1,4 +1,7 @@
 
+## For any of this to work
+
+Get an OpenAI API key and set the `OPENAI_API_KEY` environment variable to have it.
 
 
 ## The ChatGPT command line tool
