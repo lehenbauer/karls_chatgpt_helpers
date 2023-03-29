@@ -67,7 +67,7 @@ class GPTChatSession:
                 message.set_payload(content)
                 gen = Generator(f, mangle_from_=False)
                 gen.flatten(message)
-                f.write(f"\n{GPTChatSession.delimiter822}")
+                f.write(f"{GPTChatSession.delimiter822}")
 
 
     def load_yaml(self, filename):
