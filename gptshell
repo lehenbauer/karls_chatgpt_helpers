@@ -130,11 +130,15 @@ def main():
     parser.add_argument('session_file', help='the session file to use')
     parser.add_argument('-s', '--system-file', help='the system prompt file to use')
     parser.add_argument('-i', '--load', help='load a file')
+    parser.add_argument('-m', '--model', type=str, default="gpt-3.5-turbo", help='Model used for response generation')
     args = parser.parse_args()
 
     karls_chatgpt_helpers.openai_api_key_set_or_die()
 
-    g = karls_chatgpt_helpers.GPTChatSession(debug=False)
+    g = karls_chatgpt_helpers.GPTChatSession(
+        model=args.model,
+        debug=False
+    )
     if args.system_file:
         with open(args.system_file, 'r') as f:
             system_prompt = f.read()
