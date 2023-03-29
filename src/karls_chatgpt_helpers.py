@@ -28,7 +28,7 @@ class GPTChatSession:
     def load_yaml(self, filename):
         '''Load the history from a yaml file.'''
         with open(filename, "r") as f:
-            self.history = yaml.load(f)
+            self.history = yaml.safe_load(f)
 
     def save_yaml(self, filename):
         '''Save the history to a yaml file.'''
@@ -38,7 +38,7 @@ class GPTChatSession:
             # False means the output will be multiline
             # None means the output will be multiline if the data is multiline
             # canonical can be True or False
-            yaml.dump(self.history, f)
+            yaml.dump(self.history, f, default_flow_style=False, canonical=False)
 
     def _chat(self, content, role="user", streaming=False):
         self.history.append({"role": role, "content": content})

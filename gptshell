@@ -52,18 +52,32 @@ def converse(session_file):
                     line = run_editor()
                     # no continue here, we want to fall through and send the
                     # user's input to the chat API
+                elif line.startswith('%load'):
+                    # Code for %load command
+                    filename = line.split()[1]  # Extract the filename
+                    g.load(filename)
+                    continue
                 elif line.startswith('%save'):
                     # Code for %save command
                     filename = line.split()[1]  # Extract the filename
                     g.save(filename)
+                    continue
+                elif line.startswith('%yload'):
+                    # Code for %load command
+                    filename = line.split()[1]  # Extract the filename
+                    g.load_yaml(filename)
                     continue
                 elif line.startswith('%ysave'):
                     # Code for %ysave command
                     filename = line.split()[1]  # Extract the filename
                     g.save_yaml(filename)
                     continue
+                elif line.startswith('%history'):
+                    # Code for %history command
+                    print(g.history)
+                    continue
                 else:
-                    print("Unrecognized % command, % commands are %list, %edit, %sysedit, %save, %ysave")
+                    print("Unrecognized % command, % commands are %list, %edit, %sysedit, %load, %save, %yload, %ysave")
                     continue
 
             if line.startswith('s:'):
