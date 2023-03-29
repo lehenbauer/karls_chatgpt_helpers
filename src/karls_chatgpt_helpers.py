@@ -42,13 +42,14 @@ class GPTChatSession:
     def load(self, filename):
         '''Load the history from an RFC-822 formatted file.'''
         with open(filename, "r") as f:
-            messages = f.read().split(GPTChatSession.delimiter822)
+            messages = f.read().split(GPTChatSession.delimiter822)[:-1]
 
         parser = Parser()
 
         for row in messages:
             message = parser.parsestr(row)
             role = message['Role']
+            #role = message.get('Role')
             content = message.get_payload()
 
             self.history.append({"role": role, "content": content})
@@ -66,7 +67,7 @@ class GPTChatSession:
                 message.set_payload(content)
                 gen = Generator(f, mangle_from_=False)
                 gen.flatten(message)
-                f.write(f"\n{GPTChatSession.delimiter822}\n")
+                f.write(f"\n{GPTChatSession.delimiter822}")
 
 
     def load_yaml(self, filename):
