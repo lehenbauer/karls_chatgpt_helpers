@@ -3,7 +3,7 @@
 import argparse
 import os
 import sys
-from karls_chatgpt_helpers import GPTChatSession
+import karls_chatgpt_helpers
 
 
 def handle_system_prompt_file(session, filename):
@@ -25,11 +25,9 @@ def main():
 
     args, remaining_args = parser.parse_known_args()
 
-    if not os.environ.get('OPENAI_API_KEY'):
-        print("Please set the OPENAI_API_KEY environment variable.")
-        sys.exit(1)
+    karls_chatgpt_helpers.openai_api_key_set_or_die()
 
-    session = GPTChatSession(
+    session = karls_chatgpt_helpers.GPTChatSession(
         model=args.model,
         max_tokens=args.max_tokens,
         temperature=args.temperature

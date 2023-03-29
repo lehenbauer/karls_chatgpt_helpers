@@ -3,7 +3,14 @@
 import openai
 import json
 import os
+import sys
 import yaml
+
+def openai_api_key_set_or_die():
+    if openai.api_key is None:
+        print("Error:  OpenAI API key not set.  Please set the OPENAI_API_KEY environment variable, use 'openai api_key set <YOUR_API_KEY>', or some other method to set it before proceeding.")
+        sys.exit(1)
+
 
 
 class GPTChatSession:

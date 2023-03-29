@@ -104,6 +104,8 @@ def main():
     parser.add_argument('session_file', help='the session file to use')
     args = parser.parse_args()
 
+    karls_chatgpt_helpers.openai_api_key_set_or_die()
+
     converse(args.session_file)
 
 
