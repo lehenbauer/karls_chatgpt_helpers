@@ -41,6 +41,11 @@ def main():
     if args.system_prompt_file:
         handle_system_prompt_file(session, args.system_prompt_file)
 
+    # if there's no prompt file and no prompt args on the command line, then
+    # we'll read from stdin even if --stdin wasn't specified
+    if not args.user_prompt_file and not remaining_args:
+        args.stdin = True
+
     # If we have a user prompt file, start the prompt with it
     user_prompt = ''
     if args.user_prompt_file:
@@ -63,6 +68,7 @@ def main():
             user_prompt += '\n\n' + command_line_prompt
         else:
             user_prompt = command_line_prompt
+
 
 
     response_text = session.chat(user_prompt, role="user")
