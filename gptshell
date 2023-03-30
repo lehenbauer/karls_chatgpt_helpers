@@ -122,7 +122,7 @@ def converse(g):
             break
         except KeyboardInterrupt:
             print('interrupt')
-            break
+            continue
 
 
 def main():
