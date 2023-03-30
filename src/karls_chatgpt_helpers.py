@@ -20,10 +20,9 @@ def openai_api_key_set_or_die():
 class GPTChatSession:
     delimiter822 = '\n..EOF..\n'
 
-    def __init__(self, model="gpt-3.5-turbo", max_tokens=1000, n=1, stop=None, temperature=0.5, debug=False):
+    def __init__(self, model="gpt-3.5-turbo", max_tokens=1000, stop=None, temperature=0.5, debug=False):
         self.model = model
         self.max_tokens = max_tokens
-        self.n = n
         self.stop = stop
         self.temperature = temperature
         self.debug = debug
@@ -78,11 +77,6 @@ class GPTChatSession:
     def save_yaml(self, filename):
         '''Save the history to a yaml file.'''
         with open(filename, "w") as f:
-            # default_flow_style can be True, False or None,
-            # True means the output will be a single line
-            # False means the output will be multiline
-            # None means the output will be multiline if the data is multiline
-            # canonical can be True or False
             yaml.dump(self.history, f, default_flow_style=False, canonical=False)
 
     def _chat(self, content, role="user", streaming=False):
@@ -96,7 +90,7 @@ class GPTChatSession:
             model=self.model,
             messages=self.history,
             max_tokens=self.max_tokens,
-            n=self.n,
+            n=1,
             stop=self.stop,
             temperature=self.temperature,
             stream=streaming

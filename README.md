@@ -149,17 +149,26 @@ If the first character you enter at the command prompt is a percent sign, the pe
 
 ## python package
 
-context-maintaining chatGPT session class
+Context-maintaining chatGPT session class
+
+The thing where you have a conversation with ChatGPT and it has the context of what you've already been talking about as you say new things, the entire conversation is sent to the AI for each new user message.  (Sytem messages are recorded but aren't sent until there's also a user message, as system messages aren't replied to by the AI.)
+
+Consequently if you're using the openai stuff directoy, you have to do that.  GPTChatSession does that for you.  Any session can be saved or retrieved to a file, in either RFC-822, JSON or YAML format.
+
+We find that RFC-822 is preferred because the reply text gets munged the least that way.  So if it gave you some source code or whatever, it's fit for copypasta without converstion, whereas multiline text gets sort of mangled when stored as JSON or YAML and requires conversion before use.
 
 ```python
 import karls_chatgpt_helpers
 
 g = karls_chatgpt_helpers.GPTChatSession()
 
-g.chat('message')
-g.chat('message', role='user')
+reply = g.chat('Please give me a paragraph of gibberish so I can test my API.')
+print(reply)
 
-g.chat('message', role='system')
+reply = g.chat('Another one, please.')
+print(reply)
+
+g.save('mysession.txt')
 
 ```
 
@@ -171,3 +180,24 @@ g.chat('message', role='system')
 * g.save_json(filename) - save a conversation in JSON format.
 * g.load_yaml(filename) - load a conversation in YAML format.
 * g.save_yaml(filename) - save a conversation in YAML format.
+
+
+### example
+
+```python
+import karls_chatgpt_helpers
+
+
+    g = karls_chatgpt_helpers.GPTChatSession(
+        model='gpt-3.5-turbo',
+	max_tokens=1000,
+	stop=None,
+	temperature=0.5,
+        debug=False
+    )
+
+    reply = g.chat("You think I'm a replicant, don't you?")
+
+```
+
+
