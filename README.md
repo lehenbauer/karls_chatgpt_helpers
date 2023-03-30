@@ -148,6 +148,23 @@ If the first character you enter at the command prompt is a percent sign, the pe
 * #! - execute remainder of input in a shell.  `#!bash` will create an interactive bash shell.  EOF will return you to gptshell.
 * #interact - interactively enter the python interpreter that is currently running gptshell.  if you control-D you will be back in gptshell.
 
+### gptshell command line arguments
+
+```
+usage: gptshell [-h] [-s SYSTEM_FILE] [-i LOAD] [-w SAVE] [-m MODEL]
+
+options:
+  -h, --help            show this help message and exit
+  -s SYSTEM_FILE, --system-file SYSTEM_FILE
+                        the system prompt file to use
+  -i LOAD, --load LOAD  load a session from a file
+  -w SAVE, --save SAVE  save the session to a session file
+  -m MODEL, --model MODEL
+                        Model used for response generation
+```
+
+If you say `gptshell -load sesh -save sesh`, gptshell will read in the session and save it back out after you do what you do.
+
 ## python package
 
 Context-maintaining chatGPT session class
@@ -204,10 +221,7 @@ import karls_chatgpt_helpers
 ### Usage
 
 ```
-gptshell [-h] [-s SYSTEM_FILE] [-i LOAD] [-m MODEL] session_file
-
-positional arguments:
-  session_file          the session file to use
+gptshell [-h] [-s SYSTEM_FILE] [-i LOAD] [-m MODEL]
 
 options:
   -h, --help            show this help message and exit

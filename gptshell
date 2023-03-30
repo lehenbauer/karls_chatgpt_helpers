@@ -101,7 +101,6 @@ def converse(g):
                     continue
                 elif line.startswith('%exit'):
                     # Code for exit command
-                    #g.save(session_file)
                     break
 
                 else:
@@ -118,7 +117,6 @@ def converse(g):
             # Send the user input to ChatGPT
             g.streaming_chat(line, role=role)
         except EOFError:
-            #g.save(session_file)
             break
         except KeyboardInterrupt:
             print('interrupt')
@@ -127,9 +125,9 @@ def converse(g):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('session_file', help='the session file to use')
     parser.add_argument('-s', '--system-file', help='the system prompt file to use')
-    parser.add_argument('-i', '--load', help='load a file')
+    parser.add_argument('-i', '--load', help='load a session from a file')
+    parser.add_argument('-w', '--save', help='save the session to a session file')
     parser.add_argument('-m', '--model', type=str, default="gpt-3.5-turbo", help='Model used for response generation')
     args = parser.parse_args()
 
@@ -146,7 +144,8 @@ def main():
     if args.load:
         g.load(args.load)
     converse(g)
-    g.save(args.session_file)
+    if args.save:
+        g.save(args.save)
 
 if __name__ == "__main__":
     main()
