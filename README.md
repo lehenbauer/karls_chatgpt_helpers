@@ -6,9 +6,9 @@ Sorry we don't have a good name yet.  We're workshopping it with gpt-4 but we're
 
 It's a couple-three things.
 
-1. chatgpt program for use in shell scripts, batch workflows, etc.
+1. chatgpt program for use in shell scripts, batch workflows, etc.  (Forty years of Unix is something one wants to embrace, not fight. -- Mark Diekhans)
 2. gptshell - command-line tool for interacting with chatGPT that streams and saves.
-3. Python library for interacting with chatGPT that maintains session history to permit a dialog, loading, saving, etc.
+3. Python package for interacting with the ChatGPT API that maintains session history to permit a context-maintaining dialog, loading, saving, etc.
 
 ## For any of this to work
 
@@ -45,7 +45,8 @@ echo "did mrs. o'leary's cow really kick over a lantern?" | chatgpt
 ```
 
 ```bash
-chatgpt --system-prompt 'you are a computer expert and an expert russian translator' 'please give me a commented python code fragment to read the contents of stdin to a string variable, in russian'
+chatgpt --system-prompt 'you are a computer expert and an expert russian translator' \
+    'please give me a commented python code fragment to read the contents of stdin to a string variable, in russian'
 ```
 ```plaintext
 # Этот код фрагмент считывает содержимое стандартного ввода в строковую переменную
@@ -200,4 +201,19 @@ import karls_chatgpt_helpers
 
 ```
 
+### Usage
 
+```
+gptshell [-h] [-s SYSTEM_FILE] [-i LOAD] [-m MODEL] session_file
+
+positional arguments:
+  session_file          the session file to use
+
+options:
+  -h, --help            show this help message and exit
+  -s SYSTEM_FILE, --system-file SYSTEM_FILE
+                        the system prompt file to use
+  -i LOAD, --load LOAD  load a file
+  -m MODEL, --model MODEL
+                        Model used for response generation
+```
