@@ -105,7 +105,7 @@ def converse(g):
                     break
 
                 else:
-                    print("Unrecognized % command, % commands are %list, %edit, %sysedit, %load, %save, %yload, %ysave")
+                    print("Unrecognized % command, % commands are %list, %edit, %sysedit, %load, %save, %jload, %jsave, %yload, %ysave, %!, %interact and %exit")
                     continue
 
             if line.startswith('s:'):
