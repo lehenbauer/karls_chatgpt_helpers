@@ -147,6 +147,3 @@ def main():
     if args.save:
         g.save(args.save)
 
-if __name__ == "__main__":
-    main()
-

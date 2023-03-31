@@ -4,7 +4,7 @@
 hello:
 	echo 'make build or make install or make all'
 
-build: src/karls_chatgpt_helpers.py
+build: karls_chatgpt_helpers/helpers.py karls_chatgpt_helpers/chatgpt/__main__.py karls_chatgpt_helpers/gptshell/__main__.py
 	python3 -m build
 
 install:
