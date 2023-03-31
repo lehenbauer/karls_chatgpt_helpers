@@ -5,9 +5,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "karls_chatgpt_helpers"
-version = "0.0.1"
+version = "0.0.5"
 authors = [
-    {name = "Karl", email = "karl@lehenbauer.com"},
+    {name = "Karl", email = "support@lehenbauer.com"},
 ]
 description = "Helper functions for chatgpt"
 readme = "README.md"
@@ -28,3 +28,6 @@ classifiers = [
 "Bug Tracker" = "https://github.com/lehenbauer/karls-chatgpt-helpers/issues"
 
 
+[project.scripts]
+chatgpt = "karls_chatgpt_helpers.chatgpt.__main__:main"
+gptshell = "karls_chatgpt_helpers.gptshell.__main__:main"

@@ -1,14 +1,22 @@
 
 
+PROJ=karls_chatgpt_helpers
+DIR=$(PROJ)
 
 hello:
 	echo 'make build or make install or make all'
 
-build: src/karls_chatgpt_helpers.py
+build: $(DIR)/helpers.py $(DIR)/chatgpt/__main__.py $(DIR)/gptshell/__main__.py
 	python3 -m build
 
-install:
+devinstall:
 	pip3 install --editable .
+
+install: build
+	pip3 install .
+
+deinstall:
+	pip3 uninstall $(PROJ)
 
 all: build install
 

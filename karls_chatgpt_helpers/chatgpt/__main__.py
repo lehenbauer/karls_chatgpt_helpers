@@ -72,5 +72,3 @@ def main():
         sys.stdout.write('\n')
 
 
-if __name__ == "__main__":
-    main()
