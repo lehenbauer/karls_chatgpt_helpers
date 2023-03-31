@@ -14,6 +14,18 @@ It's a couple-three things.
 
 You gotta have an OpenAI API key. Get one and set the `OPENAI_API_KEY` environment variable to have it, or use `openai api_key set <YOUR_API_KEY>`, or some other method to set your API key before proceeding.
 
+## install
+
+You can install the package from pypi using pip with
+
+```
+pip install karls_chatgpt_helpers
+```
+
+If you want to build from source, checkout the repo, do a `make build` and a `make install` or just say `python3 -m build` and `pip install .`
+
+If you want to hack on this you might consider installing it with `pip3 install --editable .` then you can edit the python files in the repo and the changes will appear to your python programs (while in that environment or virtual environment) without having to rebuild and reinstall.  Check your friendly search engine or ask your AI assistant for details.
+
 ## The ChatGPT command line tool
 
 'chatgpt' is a unix/linux/macos command line tool for use in normal automated Unix workflows, for example, shell scripts.
@@ -116,16 +128,15 @@ gpt>
 At this point you can type something and when you press enter it will be sent to OpenAI's chat completion API.  Like the webpage, the results will be streamed back.  If you decide you don't want to see the rest of the result, i.e. you want it to stop generating, hit control-C.
 
 ```bash
-% gptshell sesh
+% gptshell
+```
 `gpt> was basketball originally played with a wicker basket or something?`
 
 Yes, basketball was originally played with a peach basket or a woven wicker basket placed on a 10-foot-high pole. The game was invented by James Naismith in 1891, and the first basketball game was played with a soccer ball and two peach baskets as the goals. The baskets had no bottom, so players had to retrieve the ball after each score by climbing a ladder or using a stick to poke it out. The modern basketball hoop with a net was not introduced until the 1900s.
 `gpt> did they at one point have a pullstring to release the ball from the net?`
 
 Yes, basketball hoops with pullstrings to release the ball from the net were used in the early 1900s. The pullstring mechanism was invented by a Canadian physical education teacher named Dr. Luther Gulick in 1906. The design featured a cord attached to the bottom of the net that ran through a pulley system and down to the ground. When a player scored a basket, they could pull the cord to release the ball from the net without having to climb up and retrieve it. The pullstring mechanism was eventually replaced by a simpler design that used a metal ring attached to the bottom of the net to allow the ball to pass through.
-```bash
-gpt>
-```
+`gpt>`
 
 Apparently you can get better answers if you provide some system prompts.  Like telling it it's an expert programmer before asking it coding questions.  Here's a possible example:
 
