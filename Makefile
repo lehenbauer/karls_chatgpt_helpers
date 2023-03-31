@@ -15,6 +15,9 @@ devinstall:
 install: build
 	pip3 install .
 
+upload: build
+	python3 -m twine upload dist/*
+
 deinstall:
 	pip3 uninstall $(PROJ)
 
