@@ -120,6 +120,8 @@ options:
 
 gptshell is an interactive program that solicits user input and enables an interactive conversation with ChatGPT.  You might think of it as a command line equivalent of the ChatGPT dialog page at https://chat.openai.com/.
 
+We think the conversations people have with gpt-3.5, gpt-4, etc, for example when writing software, will be important pieces of documentation, the preserving of which may be valuable going foward.  For instance you might take a conversation you had with gpt-3.5, your pompts and its, and ask gpt-4 to look it over and see if it sees any bugs, oddities, or improvements in can make.  gpt-4 said it thinks this is a good idea.
+
 When you fire up gptshell, you get a prompt:
 ```
 gpt>
@@ -129,14 +131,13 @@ At this point you can type something and when you press enter it will be sent to
 
 ```bash
 % gptshell
+gpt> was basketball originally played with a wicker basket or something?
 ```
-`gpt> was basketball originally played with a wicker basket or something?`
-
 Yes, basketball was originally played with a peach basket or a woven wicker basket placed on a 10-foot-high pole. The game was invented by James Naismith in 1891, and the first basketball game was played with a soccer ball and two peach baskets as the goals. The baskets had no bottom, so players had to retrieve the ball after each score by climbing a ladder or using a stick to poke it out. The modern basketball hoop with a net was not introduced until the 1900s.
-`gpt> did they at one point have a pullstring to release the ball from the net?`
-
+```
+gpt> did they at one point have a pullstring to release the ball from the net?
+```
 Yes, basketball hoops with pullstrings to release the ball from the net were used in the early 1900s. The pullstring mechanism was invented by a Canadian physical education teacher named Dr. Luther Gulick in 1906. The design featured a cord attached to the bottom of the net that ran through a pulley system and down to the ground. When a player scored a basket, they could pull the cord to release the ball from the net without having to climb up and retrieve it. The pullstring mechanism was eventually replaced by a simpler design that used a metal ring attached to the bottom of the net to allow the ball to pass through.
-`gpt>`
 
 Apparently you can get better answers if you provide some system prompts.  Like telling it it's an expert programmer before asking it coding questions.  Here's a possible example:
 
@@ -154,10 +155,19 @@ If the first character you enter at the command prompt is a percent sign, the pe
 * %ysave filename - save a previous or pre-prepared conversation in YAML format.
 * %jload filename - load a previous or pre-prepared conversation in JSON format.
 * %jsave filename - save a previous or pre-prepared conversation in JSON format.
+
+* %edit - go into your editor, edit, and if you save, sends what you saved as a user prompt.
+* %sysedit - go into your editor, edit, and if you save, sends what you saved as a system prompt.
 * %list - lists the conversation history, zero or more rows containing a role (user, system, or assistant) and content.
 * %history - list the conversation history in a pleasing human-readable form.
 * #! - execute remainder of input in a shell.  `#!bash` will create an interactive bash shell.  EOF will return you to gptshell.
 * #interact - interactively enter the python interpreter that is currently running gptshell.  if you control-D you will be back in gptshell.
+
+You can load and save conversations in RFC822, YAML and JSON.  RFC822 seems to be the best if you want to copy and paste stuff out of the replies, as it munges the text the least.  The yaml version doesn't come out looking particularly attractive, although it works.
+
+You can specify a system prompt file on the cocmand line, or you can edit something up in your editor with _%sysedit_.
+
+You can specify prompts at the command line, but let's say you want to also tell GPT your SQL schema and your python class and your program before you ask your question.  Do _%edit_, then in your edit pull in your schema, your class, your program, and then write your actual prompts and the beginning and/or the end.  Something like "consider the below SQL schema, python class, and program, please add these new columns to the xxx table and propagate them through all the functions that reference elements of the table, or whatever.
 
 ### gptshell command line arguments
 
