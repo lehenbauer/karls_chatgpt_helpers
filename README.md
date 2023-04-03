@@ -165,7 +165,7 @@ If the first character you enter at the command prompt is a percent sign, the pe
 
 You can load and save conversations in RFC822, YAML and JSON.  RFC822 seems to be the best if you want to copy and paste stuff out of the replies, as it munges the text the least.  The yaml version doesn't come out looking particularly attractive, although it works.
 
-You can specify a system prompt file on the cocmand line, or you can edit something up in your editor with _%sysedit_.
+You can specify a system prompt file on the command line, or you can edit something up in your editor with _%sysedit_.
 
 You can specify prompts at the command line, but let's say you want to also tell GPT your SQL schema and your python class and your program before you ask your question.  Do _%edit_, then in your edit pull in your schema, your class, your program, and then write your actual prompts and the beginning and/or the end.  Something like "consider the below SQL schema, python class, and program, please add these new columns to the xxx table and propagate them through all the functions that reference elements of the table, or whatever.
 
@@ -192,7 +192,7 @@ Context-maintaining chatGPT session class
 
 The thing where you have a conversation with ChatGPT and it has the context of what you've already been talking about as you say new things, the entire conversation is sent to the AI for each new user message.  (Sytem messages are recorded but aren't sent until there's also a user message, as system messages aren't replied to by the AI.)
 
-Consequently if you're using the openai stuff directoy, you have to do that.  GPTChatSession does that for you.  Any session can be saved or retrieved to a file, in either RFC-822, JSON or YAML format.
+Consequently if you're using the openai stuff directly, you have to do that.  GPTChatSession does that for you.  Any session can be saved or retrieved to a file, in either RFC-822, JSON or YAML format.
 
 We find that RFC-822 is preferred because the reply text gets munged the least that way.  So if it gave you some source code or whatever, it's fit for copypasta without converstion, whereas multiline text gets sort of mangled when stored as JSON or YAML and requires conversion before use.
 
