@@ -129,12 +129,15 @@ def main():
     parser.add_argument('-i', '--load', help='load a session from a file')
     parser.add_argument('-w', '--save', help='save the session to a session file')
     parser.add_argument('-m', '--model', type=str, default="gpt-3.5-turbo", help='Model used for response generation')
+    parser.add_argument('-t', '--temperature', type=float, default=0.7, help='Temperature for response generation')
+
     args = parser.parse_args()
 
     karls_chatgpt_helpers.openai_api_key_set_or_die()
 
     g = karls_chatgpt_helpers.GPTChatSession(
         model=args.model,
+        temperature=args.temperature,
         debug=False
     )
     if args.system_file:

@@ -172,7 +172,7 @@ You can specify prompts at the command line, but let's say you want to also tell
 ### gptshell command line arguments
 
 ```
-usage: gptshell [-h] [-s SYSTEM_FILE] [-i LOAD] [-w SAVE] [-m MODEL]
+usage: gptshell [-h] [-s SYSTEM_FILE] [-i LOAD] [-w SAVE] [-m MODEL] [-t TEMPERATURE]
 
 options:
   -h, --help            show this help message and exit
@@ -182,9 +182,15 @@ options:
   -w SAVE, --save SAVE  save the session to a session file
   -m MODEL, --model MODEL
                         Model used for response generation
+  -t TEMPERATURE, --temperature TEMPERATURE
+                        Temperature for response generation
 ```
 
 If you say `gptshell -load sesh -save sesh`, gptshell will read in the session and save it back out after you do what you do.
+
+Model is gpt-3.5-turbo by default but can be set to gpt-4 if you have API access to gpt-4.
+
+Temperature defaults to 0.7 but can be set higher or lower using the switches shown above.
 
 ## python package
 
