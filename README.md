@@ -2,7 +2,7 @@
 
 Sorry we don't have a good name yet.  We're workshopping it with gpt-4 but we're not rushing it.
 
-## What is this shit?
+## What is this noise?
 
 It's a couple-three things.
 
