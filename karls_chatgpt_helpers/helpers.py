@@ -1,6 +1,6 @@
 
 
-import openai
+from openai import OpenAI
 import json
 import os
 import sys
@@ -11,22 +11,27 @@ from email.parser import Parser
 from email.generator import Generator
 
 def openai_api_key_set_or_die():
-    if openai.api_key is None:
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if api_key is None:
         print("Error:  OpenAI API key not set.  Please set the OPENAI_API_KEY environment variable, use 'openai api_key set <YOUR_API_KEY>', or some other method to set it before proceeding.")
         sys.exit(1)
+    return api_key
 
 
 
 class GPTChatSession:
     delimiter822 = '\n..EOF..\n'
 
-    def __init__(self, model="gpt-3.5-turbo", max_tokens=1000, stop=None, temperature=0.5, debug=False):
+    def __init__(self, model="gpt-5-mini", max_tokens=1000, stop=None, debug=False):
         self.model = model
         self.max_tokens = max_tokens
         self.stop = stop
-        self.temperature = temperature
+        #self.temperature = temperature
         self.debug = debug
         self.history = []
+        # Initialize the OpenAI client
+        api_key = openai_api_key_set_or_die()
+        self.client = OpenAI(api_key=api_key)
 
     def load_json(self, filename):
         '''Load the history from a json file.'''
@@ -86,13 +91,13 @@ class GPTChatSession:
         elif role != "user":
             raise ValueError("role must be 'user' or 'system'")
 
-        response = openai.ChatCompletion.create(
+        response = self.client.chat.completions.create(
             model=self.model,
             messages=self.history,
-            max_tokens=self.max_tokens,
+            max_completion_tokens=self.max_tokens,
             n=1,
             stop=self.stop,
-            temperature=self.temperature,
+            #temperature=self.temperature,
             stream=streaming
         )
 
@@ -117,9 +122,9 @@ class GPTChatSession:
                 if self.debug:
                     print("chunk:", chunk)
                 delta = chunk.choices[0].delta
-                if 'content' in delta:
+                if delta.content is not None:
                     # append the new text to the response
-                    chunk_text = delta['content']
+                    chunk_text = delta.content
                     response_text += chunk_text
                     print(chunk_text, end='', flush=True)
         except KeyboardInterrupt:
